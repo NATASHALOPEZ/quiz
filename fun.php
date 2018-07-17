@@ -3,6 +3,7 @@
 session_start();
 ?>
 <?php
+//connection to database
 if(!isset($_SESSION['username'])){
 header('location:quiz_session.php');
 }
@@ -13,6 +14,7 @@ mysqli_select_db($con, 'quiz_database');
 
 ?>
 <?php 
+//get the question number
 $q_number = (int) $_GET['n'];
  $quer = "SELECT * FROM `questions_fun`";
    $result = mysqli_query($con, $quer); 
@@ -30,14 +32,27 @@ $q_number = (int) $_GET['n'];
 	<link rel="stylesheet" type="text/css" href="bootstrap.css">
 	<link rel="stylesheet" href="main.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	
 	
 </head>
 <style type="text/css">
   .container{
     margin-top: 10%;
   }
-
+ #progressbar {
+      background-color: black;
+      border-radius: 13px; /* (height of inner div) / 2 + padding */
+      padding: 3px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    
+    #progressbar > div {
+       background-color: green;
+       width: <?php echo $percent ?>%; /* Adjust with JavaScript */
+       height: 20px;
+       border-radius: 10px;
+    }
 
 </style>
 <body>
@@ -56,10 +71,13 @@ $q_number = (int) $_GET['n'];
    <!--  <div id="myHtml" style="display: none;">Please select an option </div> -->
 	 <form id="chkclick" action="check.php" method="post">
 	 <?php
+	 //query to get questions from database
 	 $q = " select * from questions_fun where qid = $q_number";
 	 $query = mysqli_query($con, $q);
 
 	  $question = $query->fetch_assoc();
+
+	  //query to get answers from database
 	   $q1 = " select * from answers_fun where q_number = $q_number";
 	 $answers = mysqli_query($con, $q1);
 

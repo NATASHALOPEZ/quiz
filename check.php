@@ -10,25 +10,13 @@ session_start();
 
 
 <?php 
-
+//session to set score
 if (!isset($_SESSION['score'])){
   $_SESSION['score'] = 0;
 }
 ?>
 
-<?php
-if(isset($_POST['answer'])){
-  $selected_ans = $_POST['answer'];
-}
-else{
-  $selected_ans = NULL;
-}
 
-if($selected_ans = NULL){
-  echo  "please select";
-  exit();
-}
-?>
 <?php
 
 if(isset($_POST['submit'])){
@@ -36,18 +24,21 @@ if(isset($_POST['submit'])){
   $number = $_POST['q_number'];
   $selected_ans = $_POST['answer'];
   $nextNumber = $number+1;
-
+//get the correct answer
   $quer = "SELECT * FROM `questions_fun`";
+//get total questions
    $result = mysqli_query($con, $quer); 
    $total = $result->num_rows;
-
+//get the result
   $query = "SELECT * FROM `answers_fun`
   WHERE q_number= $number AND correct=1";
 
    $results = mysqli_query($con, $query); 
+   //get the row
    $row = $results->fetch_assoc();
+   //sets correct answer
    $correct_ans = $row['aid'];
-
+//comparison
    if($correct_ans==$selected_ans){
      $_SESSION['score']++;
    }
